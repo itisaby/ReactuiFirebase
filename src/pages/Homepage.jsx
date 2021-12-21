@@ -20,9 +20,6 @@ export default function Homepage() {
     <Layout>
       <Heading>Home page</Heading>
       <Text my={6}>{`The current user is ${currentUser}`}</Text>
-
-      
-       
     </Layout>
   )
 }
