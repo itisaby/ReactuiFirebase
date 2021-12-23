@@ -7,16 +7,16 @@ import {
   extendTheme,
   theme,
 } from '@chakra-ui/react'
-import customTheme from './CustomTheme'
-// const customTheme = extendTheme({
-//   config: {
-//     initialColorMode: 'light',
-//     useSystemColorMode: false,
-//   },
-//   colors: {
-//     primary: theme.colors.pink,
-//   },
-// })
+// import customTheme from './CustomTheme'
+const customTheme = extendTheme({
+  config: {
+    initialColorMode: 'light',
+    useSystemColorMode: false,
+  },
+  colors: {
+    primary: theme.colors.teal,
+  },
+})
 
 ReactDOM.render(
   <React.StrictMode>
