@@ -1,6 +1,8 @@
 import React from "react";
 import { Container, Box } from "@chakra-ui/react";
 import { Navbar } from "./Navbar";
+
+
 // import Particles from "react-particles-js";
 import Particles from "../Particles/Particle";
 export function Layout(props) {
@@ -9,6 +11,7 @@ export function Layout(props) {
       <Particles>
         {/* <div> */}
         <Navbar />
+        {/* <Nav /> */}
         {/* <Particles
           params={{
             particles: {

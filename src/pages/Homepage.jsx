@@ -8,22 +8,21 @@ import {
   OrderedList,
   Tag,
   Text,
-  Image
+  Image,
 } from "@chakra-ui/react";
 import React from "react";
 import { Layout } from "../components/Layout";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 // import Particles from "react-particles-js";
-import Particles from "../Particles/Particle"
+import Particles from "../Particles/Particle";
+import CallToActionWithAnnotation from "./CalltoAction"
 
 export default function Homepage() {
   const { currentUser } = useAuth();
   return (
-   
-      <Layout>
-       
-        {/* <Particles
+    <Layout>
+      {/* <Particles
         params={{
           particles: {
             number: {
@@ -45,10 +44,11 @@ export default function Homepage() {
             height: "100%"
           }}
         > */}
-       
-           <Heading>Home page</Heading>
-          <Text my={6}>{`The current user is ${currentUser}`}</Text>
-          {/* <Image
+
+      {/* <Heading>Home page</Heading>
+      <Text my={6}>{`The current user is ${currentUser}`}</Text> */}
+      <CallToActionWithAnnotation />
+      {/* <Image
             alignSelf="center"
             // mt={isNotSmallerScreen ? "0" : "12"}
             // mb={isNotSmallerScreen ? "0" : "12"}
@@ -58,9 +58,7 @@ export default function Homepage() {
             boxSize="1000px"
             src={currentUser.photoURL}
           /> */}
-       
-        
-      </Layout>
-   
+      
+    </Layout>
   );
 }
