@@ -11,7 +11,7 @@ import {
   Flex,
   Image,
   Link,
-  Checkbox
+  Checkbox,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { FaGoogle } from "react-icons/fa";
@@ -130,7 +130,7 @@ export default function Registerpage() {
       <Stack minH={"100vh"} direction={{ base: "column", md: "row" }}>
         <Flex p={8} flex={1} align={"center"} justify={"center"}>
           <Stack spacing={4} w={"full"} maxW={"md"}>
-            <Heading fontSize={"2xl"}>Sign in to your account</Heading>
+            <Heading fontSize={"2xl"}>Register your account</Heading>
             <FormControl id="email">
               <FormLabel>Email address</FormLabel>
               <Input type="email" />

@@ -126,7 +126,7 @@ export default function CallToActionWithAnnotation() {
                     color={"white"}
                     _hover={{ bg: "whiteAlpha.500" }}
                   >
-                    Show me more
+                   Show me more
                   </Button>
                 </Stack>
               </Stack>
