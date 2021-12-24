@@ -18,14 +18,14 @@ import { useMediaQuery } from "@chakra-ui/media-query";
 import { Card } from "../components/Card";
 import { useAuth } from "../contexts/AuthContext";
 import { useColorMode } from "@chakra-ui/color-mode";
-
+import BasicUsage from "./Modal";
 
 export default function Profilepage() {
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
   const { currentUser } = useAuth();
   const [isNotSmallerScreen] = useMediaQuery("(min-width:600px)");
-  
+
   return (
     <Layout>
       {/* <Heading>
@@ -69,6 +69,7 @@ export default function Profilepage() {
             </Text>
             <Text color={isDark ? "gray.200" : "gray.500"}>
               Welcome OnBoard with AI Writer
+              <BasicUsage />
             </Text>
           </Box>
           <Image
@@ -81,6 +82,14 @@ export default function Profilepage() {
             boxSize="300px"
             src={currentUser.photoURL}
           />
+          <Text
+            fontSize="xl"
+            fontWeight="bold"
+            bgGradient="linear(to-r, cyan.400, blue.500, purple.600)"
+            bgClip="text"
+          >
+            {currentUser.email}
+          </Text>
         </Flex>
         <Flex
           direction={isNotSmallerScreen ? "row" : "column"}
@@ -88,20 +97,11 @@ export default function Profilepage() {
           p={isNotSmallerScreen ? "32" : "0"}
           alignSelf="flex-start"
         >
-          <Button
-            colorScheme="teal"
-            size="lg"
-            variant="outline"
-           
-          >
-            Button
-          </Button>
+          <Container maxW="container.lg" overflowX="auto" py={4}>
+            <chakra.pre>{JSON.stringify(currentUser, null, 2)}</chakra.pre>
+          </Container>
         </Flex>
       </Stack>
-      {/* 
-      <Container maxW="container.lg" overflowX="auto" py={4}>
-        <chakra.pre>{JSON.stringify(currentUser, null, 2)}</chakra.pre>
-      </Container> */}
     </Layout>
   );
 }
