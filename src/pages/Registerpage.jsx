@@ -30,6 +30,7 @@ import { getDatabase, ref, set } from "firebase/database";
 
 export default function Registerpage() {
   const history = useHistory();
+  const [username, setUserName] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -70,7 +71,8 @@ export default function Registerpage() {
                 //   currentUserPassword: password,
                 // }) 
                 const db = getDatabase();
-                set(ref(db,'currentUser/details/' + name), {
+                set(ref(db,'currentUser/details/' + username), {
+                  userName: username,
                   currentUser: name,
                   currentUserEmail: email,
                   currentUserPassword: password,
@@ -92,6 +94,15 @@ export default function Registerpage() {
           }}
         >
           <Stack spacing="6">
+          <FormControl id="username" isRequired>
+              <FormLabel>Username</FormLabel>
+              <Input type="text" 
+              value = {username}
+              onChange={(e) => setUserName(e.target.value)}
+              name = "name"
+              autoComplete="name"
+              />
+            </FormControl>
             <FormControl id="firstName" isRequired>
               <FormLabel>Name</FormLabel>
               <Input type="text" 

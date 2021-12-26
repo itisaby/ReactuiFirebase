@@ -29,6 +29,7 @@ import { useColorMode } from "@chakra-ui/color-mode";
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { getDatabase, ref, onValue, set } from "firebase/database";
+import { getAuth, updateEmail } from "firebase/auth";
 
 export default function Profilepage() {
   const { colorMode } = useColorMode();
@@ -38,7 +39,9 @@ export default function Profilepage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showEmail, setShowEmail] = useState("");
   const [showName, setShowName] = useState("");
-  var userEmail, userName;
+  var userEmail, userName, uname;
+
+  const auth = getAuth();
 
   const handleEmailChange = (e) => setShowEmail(e.target.value);
   const handleNameChange = (e) => setShowName(e.target.value);
@@ -52,6 +55,7 @@ export default function Profilepage() {
       console.log(childSnapshot.val());
       const data = childSnapshot.val();
       console.log(data.currentUserEmail);
+      uname = data.userName;
       userName = data.currentUser;
       userEmail = data.currentUserEmail;
       console.log(userEmail);
@@ -69,11 +73,16 @@ export default function Profilepage() {
     const db = getDatabase();
     var email = currentUser.email;
     // const getUser = ref(db, "currentUser/details/", email);
-    set(ref(db, "currentUser/details/" + userName), {
+    set(ref(db, "currentUser/details/" + uname), {
       currentUser: showName,
       currentUserEmail: showEmail,
     });
 
+    // updateEmail(auth.currentUser, showEmail).then(()=>{
+    //   console.log("Email updated");
+    // }).catch(()=>{
+    //   console.log("Email not updated");
+    // })
   }
   
 
@@ -153,7 +162,7 @@ export default function Profilepage() {
                 <Box>
                   <FormControl id="firstName" isRequired>
                     <FormLabel>Name</FormLabel>
-                    <Input type="text" placeholder={userName} 
+                    <Input type="text" placeholder={currentUser.displayName ? currentUser.displayName : userName} 
                     value = {showName}
                     onChange={handleNameChange}
                     />
@@ -162,7 +171,7 @@ export default function Profilepage() {
                 
               <FormControl id="email" isRequired>
                 <FormLabel>Email address</FormLabel>
-                <Input type="email" placeholder={userEmail}
+                <Input type="email" placeholder={currentUser.email ? currentUser.email : userName}
                 value = {showEmail}
                 onChange={handleEmailChange}
                 />
