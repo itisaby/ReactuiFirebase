@@ -5,26 +5,36 @@ import {
   chakra,
   Code,
   Container,
-  Heading,
   Stack,
   Circle,
   Flex,
   Box,
   Text,
   Button,
+  FormControl,
+  FormLabel,
+  Input,
+  InputGroup,
+  HStack,
+  InputRightElement,
+  Heading,
+  useColorModeValue,
+  Link,
 } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/image";
 import { useMediaQuery } from "@chakra-ui/media-query";
 import { Card } from "../components/Card";
 import { useAuth } from "../contexts/AuthContext";
 import { useColorMode } from "@chakra-ui/color-mode";
-import BasicUsage from "./Modal";
+import { useState } from 'react';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 export default function Profilepage() {
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
   const { currentUser } = useAuth();
   const [isNotSmallerScreen] = useMediaQuery("(min-width:600px)");
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <Layout>
@@ -69,7 +79,6 @@ export default function Profilepage() {
             </Text>
             <Text color={isDark ? "gray.200" : "gray.500"}>
               Welcome OnBoard with AI Writer
-              <BasicUsage />
             </Text>
           </Box>
           <Image
@@ -98,7 +107,50 @@ export default function Profilepage() {
           alignSelf="flex-start"
         >
           <Container maxW="container.lg" overflowX="auto" py={4}>
-            <chakra.pre>{JSON.stringify(currentUser, null, 2)}</chakra.pre>
+            <Stack spacing={4}>
+             
+                <Box>
+                  <FormControl id="firstName" isRequired>
+                    <FormLabel>Name</FormLabel>
+                    <Input type="text" />
+                  </FormControl>
+                </Box>
+                
+              <FormControl id="email" isRequired>
+                <FormLabel>Email address</FormLabel>
+                <Input type="email" />
+              </FormControl>
+              <FormControl id="password" isRequired>
+                <FormLabel>Password</FormLabel>
+                <InputGroup>
+                  <Input type={showPassword ? "text" : "password"} />
+                  <InputRightElement h={"full"}>
+                    <Button
+                      variant={"ghost"}
+                      onClick={() =>
+                        setShowPassword((showPassword) => !showPassword)
+                      }
+                    >
+                      {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+              <Stack spacing={10} pt={2}>
+                <Button
+                  loadingText="Submitting"
+                  size="lg"
+                  bg={"blue.400"}
+                  color={"white"}
+                  _hover={{
+                    bg: "blue.500",
+                  }}
+                >
+                  Edit
+                </Button>
+              </Stack>
+              
+            </Stack>
           </Container>
         </Flex>
       </Stack>

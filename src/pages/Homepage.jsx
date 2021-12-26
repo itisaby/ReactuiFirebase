@@ -15,7 +15,7 @@ import { Layout } from "../components/Layout";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 // import Particles from "react-particles-js";
-import Particles from "../Particles/Particle";
+// import Particles from "../Particles/Particle"
 import CallToActionWithAnnotation from "./CalltoAction"
 
 export default function Homepage() {

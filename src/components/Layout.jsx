@@ -8,7 +8,7 @@ import Particles from "../Particles/Particle";
 export function Layout(props) {
   return (
     <>
-      <Particles>
+      {/* <Particles */}
         {/* <div> */}
         <Navbar />
         {/* <Nav /> */}
@@ -28,7 +28,7 @@ export function Layout(props) {
         > */}
 
         <Container maxW="container.lg">{props.children}</Container>
-      </Particles>
+      {/* </Particles> */}
       {/* </Particles>
       </div> */}
     </>

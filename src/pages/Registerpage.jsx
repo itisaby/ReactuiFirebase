@@ -7,8 +7,10 @@ import {
   Heading,
   Input,
   Stack,
+  HStack,
   useToast,
   Flex,
+  Box,
   Image,
   Link,
   Checkbox,
@@ -22,9 +24,11 @@ import { Layout } from "../components/Layout";
 import { useAuth } from "../contexts/AuthContext";
 import useMounted from "../hooks/useMounted";
 import { useMediaQuery } from "@chakra-ui/media-query";
+import { auth, app } from '../utils/init-firebase'
 
 export default function Registerpage() {
   const history = useHistory();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmiting, setisSubmiting] = useState(false);
@@ -46,17 +50,23 @@ export default function Registerpage() {
             e.preventDefault();
             // your register logic here
             // console.log(email, password)
-            if (!email || !password) {
+            if (!email || !password || !name) {
               toast({
                 description: "credentials not valid",
                 status: "error",
                 duration: 5000,
                 isClosable: true,
               });
+              console.log(e);
             }
             setisSubmiting(true);
-            register(email, password)
+            register(email, password, name)
               .then((response) => {
+                app.database.ref("currentUsers/details/" + "/" + name).set({
+                  currentUser: name,
+                  currentUserEmail: email,
+                  currentUserPassword: password,
+                }) 
                 history.push("/profile");
                 console.log(response);
               })
@@ -74,7 +84,16 @@ export default function Registerpage() {
           }}
         >
           <Stack spacing="6">
-            <FormControl id="email">
+            <FormControl id="firstName" isRequired>
+              <FormLabel>Name</FormLabel>
+              <Input type="text" 
+              value = {name}
+              onChange={(e) => setName(e.target.value)}
+              name = "name"
+              autoComplete="name"
+              />
+            </FormControl>
+            <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
               <Input
                 value={email}
@@ -131,6 +150,10 @@ export default function Registerpage() {
         <Flex p={8} flex={1} align={"center"} justify={"center"}>
           <Stack spacing={4} w={"full"} maxW={"md"}>
             <Heading fontSize={"2xl"}>Register your account</Heading>
+            <FormControl id="firstName" >
+              <FormLabel>Name</FormLabel>
+              <Input type="name" />
+            </FormControl>
             <FormControl id="email">
               <FormLabel>Email address</FormLabel>
               <Input type="email" />
