@@ -28,6 +28,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useColorMode } from "@chakra-ui/color-mode";
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { getDatabase, ref, onValue, set } from "firebase/database";
 
 export default function Profilepage() {
   const { colorMode } = useColorMode();
@@ -35,6 +36,46 @@ export default function Profilepage() {
   const { currentUser } = useAuth();
   const [isNotSmallerScreen] = useMediaQuery("(min-width:600px)");
   const [showPassword, setShowPassword] = useState(false);
+  const [showEmail, setShowEmail] = useState("");
+  const [showName, setShowName] = useState("");
+  var userEmail, userName;
+
+  const handleEmailChange = (e) => setShowEmail(e.target.value);
+  const handleNameChange = (e) => setShowName(e.target.value);
+  var email = currentUser.email;
+  function fetchUser() {
+    const db = getDatabase();
+    
+    const getUser = ref(db, "currentUser/details/", email);
+    onValue(getUser, (snapshot) => {
+    snapshot.forEach(function(childSnapshot) {
+      console.log(childSnapshot.val());
+      const data = childSnapshot.val();
+      console.log(data.currentUserEmail);
+      userName = data.currentUser;
+      userEmail = data.currentUserEmail;
+      console.log(userEmail);
+      // setShowEmail(data.currentUserEmail);
+    })
+      // console.log(data);
+    })
+    // console.log(showEmail);
+  }
+  fetchUser();
+
+  console.log(currentUser);
+
+  function updateUserdetails(){
+    const db = getDatabase();
+    var email = currentUser.email;
+    // const getUser = ref(db, "currentUser/details/", email);
+    set(ref(db, "currentUser/details/" + userName), {
+      currentUser: showName,
+      currentUserEmail: showEmail,
+    });
+
+  }
+  
 
   return (
     <Layout>
@@ -75,7 +116,7 @@ export default function Profilepage() {
               bgGradient="linear(to-r, cyan.400, blue.500, purple.600)"
               bgClip="text"
             >
-              {currentUser.displayName}
+              {currentUser.displayName ? currentUser.displayName : userName}
             </Text>
             <Text color={isDark ? "gray.200" : "gray.500"}>
               Welcome OnBoard with AI Writer
@@ -112,14 +153,21 @@ export default function Profilepage() {
                 <Box>
                   <FormControl id="firstName" isRequired>
                     <FormLabel>Name</FormLabel>
-                    <Input type="text" />
+                    <Input type="text" placeholder={userName} 
+                    value = {showName}
+                    onChange={handleNameChange}
+                    />
                   </FormControl>
                 </Box>
                 
               <FormControl id="email" isRequired>
                 <FormLabel>Email address</FormLabel>
-                <Input type="email" />
+                <Input type="email" placeholder={userEmail}
+                value = {showEmail}
+                onChange={handleEmailChange}
+                />
               </FormControl>
+
               <FormControl id="password" isRequired>
                 <FormLabel>Password</FormLabel>
                 <InputGroup>
@@ -145,6 +193,7 @@ export default function Profilepage() {
                   _hover={{
                     bg: "blue.500",
                   }}
+                  onClick={updateUserdetails}
                 >
                   Edit
                 </Button>

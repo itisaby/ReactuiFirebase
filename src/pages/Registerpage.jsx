@@ -25,6 +25,8 @@ import { useAuth } from "../contexts/AuthContext";
 import useMounted from "../hooks/useMounted";
 import { useMediaQuery } from "@chakra-ui/media-query";
 import { auth, app } from '../utils/init-firebase'
+import { getDatabase, ref, set } from "firebase/database";
+
 
 export default function Registerpage() {
   const history = useHistory();
@@ -62,11 +64,17 @@ export default function Registerpage() {
             setisSubmiting(true);
             register(email, password, name)
               .then((response) => {
-                app.database.ref("currentUsers/details/" + "/" + name).set({
+                // app.database.ref("currentUsers/details/" + "/" + name).set({
+                //   currentUser: name,
+                //   currentUserEmail: email,
+                //   currentUserPassword: password,
+                // }) 
+                const db = getDatabase();
+                set(ref(db,'currentUser/details/' + name), {
                   currentUser: name,
                   currentUserEmail: email,
                   currentUserPassword: password,
-                }) 
+                });
                 history.push("/profile");
                 console.log(response);
               })
