@@ -43,8 +43,7 @@ export default function Profilepage() {
 
   const auth = getAuth();
 
-  const handleEmailChange = (e) => setShowEmail(e.target.value);
-  const handleNameChange = (e) => setShowName(e.target.value);
+
   var email = currentUser.email;
   function fetchUser() {
     const db = getDatabase();
@@ -74,6 +73,7 @@ export default function Profilepage() {
     var email = currentUser.email;
     // const getUser = ref(db, "currentUser/details/", email);
     set(ref(db, "currentUser/details/" + uname), {
+      userName: uname,
       currentUser: showName,
       currentUserEmail: showEmail,
     });
@@ -84,7 +84,8 @@ export default function Profilepage() {
     //   console.log("Email not updated");
     // })
   }
-  
+  const handleEmailChange = (e) => setShowEmail(e.target.value);
+  const handleNameChange = (e) => setShowName(e.target.value);
 
   return (
     <Layout>
@@ -162,7 +163,8 @@ export default function Profilepage() {
                 <Box>
                   <FormControl id="firstName" isRequired>
                     <FormLabel>Name</FormLabel>
-                    <Input type="text" placeholder={currentUser.displayName ? currentUser.displayName : userName} 
+                    <Input type="text" 
+                    // placeholder={currentUser.displayName ? currentUser.displayName : userName} 
                     value = {showName}
                     onChange={handleNameChange}
                     />
@@ -171,7 +173,8 @@ export default function Profilepage() {
                 
               <FormControl id="email" isRequired>
                 <FormLabel>Email address</FormLabel>
-                <Input type="email" placeholder={currentUser.email ? currentUser.email : userName}
+                <Input type="email" 
+                // placeholder={currentUser.email ? currentUser.email : userName}
                 value = {showEmail}
                 onChange={handleEmailChange}
                 />
