@@ -26,12 +26,15 @@ import { useMediaQuery } from "@chakra-ui/media-query";
 import { Card } from "../components/Card";
 import { useAuth } from "../contexts/AuthContext";
 import { useColorMode } from "@chakra-ui/color-mode";
-import { useState } from 'react';
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { useState } from "react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { getDatabase, ref, onValue, set } from "firebase/database";
 import { getAuth, updateEmail } from "firebase/auth";
+import { useHistory, useLocation } from "react-router-dom";
 
 export default function Profilepage() {
+  const history = useHistory();
+  const location = useLocation();
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
   const { currentUser } = useAuth();
@@ -40,35 +43,37 @@ export default function Profilepage() {
   const [showEmail, setShowEmail] = useState("");
   const [showName, setShowName] = useState("");
   var userEmail, userName, uname;
+  const [name, setName] = useState("");
 
   const auth = getAuth();
 
-
   var email = currentUser.email;
-  function fetchUser() {
-    const db = getDatabase();
-    
-    const getUser = ref(db, "currentUser/details/", email);
-    onValue(getUser, (snapshot) => {
-    snapshot.forEach(function(childSnapshot) {
+
+  const db = getDatabase();
+
+  const getUser = ref(db, "currentUser/details/", email);
+  onValue(getUser, (snapshot) => {
+    snapshot.forEach(function (childSnapshot) {
       console.log(childSnapshot.val());
       const data = childSnapshot.val();
       console.log(data.currentUserEmail);
+
       uname = data.userName;
+
       userName = data.currentUser;
+      // setName(userName);
       userEmail = data.currentUserEmail;
       console.log(userEmail);
+
       // setShowEmail(data.currentUserEmail);
-    })
-      // console.log(data);
-    })
-    // console.log(showEmail);
-  }
-  fetchUser();
+    });
+    // console.log(data);
+  });
+  // console.log(showEmail);
 
   console.log(currentUser);
 
-  function updateUserdetails(){
+  function updateUserdetails() {
     const db = getDatabase();
     var email = currentUser.email;
     // const getUser = ref(db, "currentUser/details/", email);
@@ -77,7 +82,18 @@ export default function Profilepage() {
       currentUser: showName,
       currentUserEmail: showEmail,
     });
+    updateEmail(auth.currentUser, showEmail)
+      .then(() => {
+        // Email updated!
+        console.log("updated");
+      })
+      .catch((error) => {
+        // An error occurred
+        // ...
+        console.log(error);
+      });
 
+    history.push(location.state?.from ?? "/profile");
     // updateEmail(auth.currentUser, showEmail).then(()=>{
     //   console.log("Email updated");
     // }).catch(()=>{
@@ -159,24 +175,25 @@ export default function Profilepage() {
         >
           <Container maxW="container.lg" overflowX="auto" py={4}>
             <Stack spacing={4}>
-             
-                <Box>
-                  <FormControl id="firstName" isRequired>
-                    <FormLabel>Name</FormLabel>
-                    <Input type="text" 
-                    // placeholder={currentUser.displayName ? currentUser.displayName : userName} 
-                    value = {showName}
+              <Box>
+                <FormControl id="firstName" isRequired>
+                  <FormLabel>Name</FormLabel>
+                  <Input
+                    type="text"
+                    // placeholder={currentUser.displayName ? currentUser.displayName : userName}
+                    value={showName}
                     onChange={handleNameChange}
-                    />
-                  </FormControl>
-                </Box>
-                
+                  />
+                </FormControl>
+              </Box>
+
               <FormControl id="email" isRequired>
                 <FormLabel>Email address</FormLabel>
-                <Input type="email" 
-                // placeholder={currentUser.email ? currentUser.email : userName}
-                value = {showEmail}
-                onChange={handleEmailChange}
+                <Input
+                  type="email"
+                  // placeholder={currentUser.email ? currentUser.email : userName}
+                  value={showEmail}
+                  onChange={handleEmailChange}
                 />
               </FormControl>
 
@@ -210,7 +227,6 @@ export default function Profilepage() {
                   Edit
                 </Button>
               </Stack>
-              
             </Stack>
           </Container>
         </Flex>
