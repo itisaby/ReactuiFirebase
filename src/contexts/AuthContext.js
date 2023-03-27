@@ -29,6 +29,7 @@ export default function AuthContextProvider({ children }) {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, user => {
             setcurrentUser(user)
+            
         })
         return () => {
             unsubscribe()
@@ -69,6 +70,7 @@ export default function AuthContextProvider({ children }) {
         forgotPassword,
         resetPassword
     }
+    
     return <AuthContext.Provider value={value}>
         {children}
     </AuthContext.Provider>

@@ -23,22 +23,28 @@ export function Navbar() {
       mb={4}
     >
       <HStack py={4} justifyContent="flex-end" maxW="container.lg" mx="auto">
-        <Navlink to="/" name="Firbase Authentication" size="lg" />
+        <Navlink to="/" name="Firebase Authentication" mr={5} ml={5} />
         <Spacer />
-        {!currentUser && <Navlink to="/login" name="Login" />}
-        {!currentUser && <Navlink to="/register" name="Register" />}
-        {currentUser && <Navlink to="/profile" name="Profile" />}
-        {currentUser && <Navlink to="/protected-page" name="Protected" />}
-        {currentUser && <Navlink
-          to="/logout"
-          name="Logout"
-          onClick={async (e) => {
-            e.preventDefault();
-            // handle logout
-            logout();
-          }}
-        />}
+
+        {!currentUser && <Navlink to="/login" name="Login" mx="auto" />}
+        {!currentUser && <Navlink to="/register" name="Register" mx="auto" />}
+        {currentUser && <Navlink to="/profile" name="Profile" mx="auto" />}
+        {currentUser && (
+          <Navlink to="/protected-page" name="Payment" mx="auto" />
+        )}
+        {currentUser && (
+          <Navlink
+            to="/logout"
+            name="Logout"
+            onClick={async (e) => {
+              e.preventDefault();
+              // handle logout
+              logout();
+            }}
+          />
+        )}
         <IconButton
+          alignSelf="flex-end"
           variant="outline"
           icon={useColorModeValue(<FaSun />, <FaMoon />)}
           onClick={toggleColorMode}

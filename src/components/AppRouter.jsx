@@ -9,7 +9,7 @@ import Profilepage from '../pages/Profilepage'
 import ProtectedPage from '../pages/ProtectedPage'
 import Registerpage from '../pages/Registerpage'
 import ResetPasswordPage from '../pages/ResetPasswordPage'
-  
+ 
 export default function AppRouter(props) {
   return (
     <>
